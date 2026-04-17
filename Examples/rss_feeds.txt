@@ -1,0 +1,41 @@
+# RSS Feeds
+
+# Tech & Homelab
+https://fosstodon.org/tags/homelab.rss?limit=25
+https://fosstodon.org/tags/docker.rss?limit=25
+https://fosstodon.org/tags/matrix.rss?limit=25
+https://fosstodon.org/tags/linux.rss?limit=25
+https://fosstodon.org/tags/foss.rss?limit=25
+https://fosstodon.org/tags/opensource.rss?limit=25
+https://mastodon.social/tags/opensource.rss?limit=25
+https://mastodon.social/tags/selfhosting.rss?limit=25
+https://mastodon.social/tags/technology.rss?limit=25
+https://social.tchncs.de/tags/linux.rss?limit=25
+https://social.tchncs.de/tags/synology.rss?limit=25
+
+# News & Politics
+https://mastodon.online/tags/nachrichten.rss?limit=25
+https://mastodon.social/tags/nachrichten.rss?limit=25
+https://norden.social/tags/nachrichten.rss?limit=25
+https://norden.social/tags/politik.rss?limit=25
+https://berlin.social/tags/politik.rss?limit=25
+https://social.bund.de/tags/digitalisierung.rss?limit=25
+https://ard.social/tags/tagesschau.rss?limit=25
+
+
+# Privacy & Security
+https://infosec.exchange/tags/security.rss?limit=25
+https://infosec.exchange/tags/privacy.rss?limit=25
+https://infosec.exchange/tags/cybersecurity.rss?limit=25
+https://infosec.exchange/tags/infosec.rss?limit=25
+https://infosec.exchange/tags/hacking.rss?limit=25
+https://norden.social/tags/datenschutz.rss?limit=25
+
+# Sport
+https://mastodon.social/tags/cycling.rss?limit=25
+
+# Spezialthemen & Community
+https://chaos.social/tags/ccc.rss?limit=25
+https://chaos.social/tags/republica.rss?limit=25
+https://mastodon.social/tags/fediverse.rss?limit=25
+https://hachyderm.io/tags/sysadmin.rss?limit=25
