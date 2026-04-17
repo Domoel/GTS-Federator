@@ -1,30 +1,28 @@
 # Dockerfile
 FROM python:3.11-slim
 
-# Set working directory
+# Arbeitsverzeichnis im Container
 WORKDIR /app
 
-# Copy and install requirements
-# Stelle sicher, dass eine requirements.txt in deinem Repo liegt (Inhalt: requests)
+# Abhängigkeiten kopieren und installieren
+# Sicherstellen, dass requirements.txt im Repo existiert (Inhalt: requests)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# --- DIESER TEIL HAT GEFEHLT ---
+# --- JETZT MIT UNTERSTRICH ---
 # Kopiere das Skript aus deinem Repository in das Image
-COPY gts-holmirdas.py .
-# -------------------------------
+COPY gts_holmirdas.py .
+# -----------------------------
 
-# Create data directory
+# Datenverzeichnis für Persistenz (falls das Skript dort etwas speichert)
 RUN mkdir -p /app/data
 
-# Create non-root user
+# Non-Root User für die Sicherheit
 RUN useradd -r -u 1000 holmirdas
-
-# Set ownership
 RUN chown -R holmirdas:holmirdas /app
 
-# Switch to non-root user
+# Wechsel zum User
 USER holmirdas
 
-# Default command - ACHTUNG: Bindestrich statt Unterstrich!
-CMD ["python", "gts-holmirdas.py"]
+# Startbefehl (ebenfalls mit Unterstrich)
+CMD ["python", "gts_holmirdas.py"]
