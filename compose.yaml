@@ -6,14 +6,14 @@ services:
     container_name: gts-federation
     user: 1026:100
     volumes:
-      - /volume2/docker/social/federation/data:/app/data
-      - /volume2/docker/social/federation/gts_holmirdas.py:/app/gts_holmirdas.py:ro
-      - /volume2/docker/social/federation/rss_feeds.txt:/app/rss_feeds.txt:ro
+      - ./data:/app/data
+      - ./gts_holmirdas.py:/app/gts_holmirdas.py:ro
+      - ./rss_feeds.txt:/app/rss_feeds.txt:ro
     networks:
       - social
     restart: always
     env_file:
-      - /volume2/docker/social/federation/.env
+      - .env
 
 networks:
   social:
