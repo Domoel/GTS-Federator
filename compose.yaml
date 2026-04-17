@@ -9,12 +9,8 @@ services:
       - ./data:/app/data
       - ./gts_holmirdas.py:/app/gts_holmirdas.py:ro
       - ./rss_feeds.txt:/app/rss_feeds.txt:ro
-    networks:
-      - social
-    restart: always
+    environment:
+      - TZ=Europe/Berlin
     env_file:
       - .env
-
-networks:
-  social:
-    external: true
+    restart: always
