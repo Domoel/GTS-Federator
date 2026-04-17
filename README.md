@@ -30,7 +30,15 @@ A powerful RSS-based discovery engine to populate GoToSocial instances.
 
 By leveraging RSS feeds from larger instances or specific hashtags, GTS-Federator acts as a lightweight alternative to traditional relays, giving you full control over what kind of content populates your federated timeline.
 
-This project is a refined and modernized fork of the original [HolMirDas](https://github.com/aliceif/HolMirDas) concepts, specifically optimized for Docker deployment, long-term stability, and GoToSocial's unique architecture.
+🏛 Evolution & Credits
+
+GTS-Federator is a refined and modernized fork built upon the innovative concepts of the original Fediverse discovery tools. This project stands on the shoulders of:
+
+    @aliceif – The original creator of HolMirDas, who pioneered the concept of RSS-based federation.
+
+    Matthias – Whose fork introduced essential GoToSocial adaptations and performance improvements.
+
+This version takes these foundations and optimizes them for modern production environments, focusing on native Docker integration, long-term stability, and GoToSocial's unique architectural requirements.
 
 ## 🛠 What this bot is for
 
@@ -72,17 +80,27 @@ GTS-Federator follows a few key principles:
 - **Privacy First** – No external tracking. The bot only communicates with your instance and the RSS sources you define.
 - **Transparency** – Clear, human-readable logs that tell you exactly what is happening.
 
-## ⚙️ Configuration
+## ⚙️ Configuration (Environment Variables)
 
-Configuration is handled primarily via environment variables in your `.env` file.
+The bot is configured via environment variables. Create a `.env` file in your project directory using the following parameters:
 
-| Variable | Description | Default |
+| Variable | Description | Default / Example |
 | :--- | :--- | :--- |
-| `GTS_SERVER_URL` | Your GoToSocial Instance URL | - |
-| `GTS_ACCESS_TOKEN` | Your App Access Token | - |
-| `FETCH_INTERVAL` | Time between runs (e.g., `30m`, `1h`) | `30m` |
-| `MAX_POSTS_PER_RUN` | Max posts to fetch per feed per run | `25` |
-| `TZ` | Your Timezone (e.g., `Europe/Berlin`) | `UTC` |
+| **Basics** | | |
+| `GTS_SERVER_URL` | The full URL of your GoToSocial instance. | `https://social.domain.tld` |
+| `GTS_ACCESS_TOKEN` | Your application's Access Token (needs read/search scopes). | `YOUR_SECRET_TOKEN` |
+| **Performance** | | |
+| `FETCH_INTERVAL` | Time the bot sleeps between discovery runs (e.g., `30m`, `1h`). | `30m` |
+| `MAX_POSTS_PER_RUN` | Maximum number of new posts to process per RSS feed per run. | `25` |
+| `DELAY_BETWEEN_REQUESTS` | Delay in seconds between API calls to prevent rate limiting. | `1` |
+| `REQUEST_TIMEOUT` | Seconds to wait for responses from external servers. | `30` |
+| **Identity & Logs** | | |
+| `TZ` | Your local timezone for accurate logging and scheduling. | `Europe/Berlin` |
+| `LOG_LEVEL` | Level of logging detail (`DEBUG`, `INFO`, `WARNING`, `ERROR`). | `INFO` |
+| `USER_AGENT` | Custom User-Agent to identify your bot to remote instances. | `GTS-Federator/1.0...` |
+| **Paths** | | |
+| `RSS_URLS_FILE` | Internal path to the feed list (change only if necessary). | `/app/rss_feeds.txt` |
+| `DATABASE_PATH` | Internal path to the JSON state file. | `/app/data/processed_urls.json` |
 
 ## 📦 Installation
 
