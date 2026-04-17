@@ -8,7 +8,7 @@ import requests
 import feedparser
 from datetime import timedelta, datetime
 
-class GTSHolMirDas:
+class GTSFederator:
     def __init__(self):
         self.config = {
             "server_url": os.getenv("GTS_SERVER_URL", "").rstrip('/'),
@@ -18,7 +18,7 @@ class GTSHolMirDas:
             "fetch_interval": os.getenv("FETCH_INTERVAL", "30m"),
             "log_level": os.getenv("LOG_LEVEL", "INFO"),
             "rss_urls_file": os.getenv("RSS_URLS_FILE", "/app/rss_feeds.txt"),
-            "user_agent": os.getenv("USER_AGENT", "GTS-Federation-Bot/1.0 (+https://social.ztfr.eu)")
+            "user_agent": os.getenv("USER_AGENT", "GTS-Federator/1.0 (+https://social.ztfr.eu)")
         }
         
         logging.basicConfig(
@@ -64,7 +64,7 @@ class GTSHolMirDas:
             self.logger.error(f"Save error: {e}")
 
     def process_feeds(self):
-        self.logger.info(f"📂 Start Fetching. Database: {self.db_path}")
+        self.logger.info(f"📂 Starting fetch run. Database: {self.db_path}")
 
         if not os.path.exists(self.config["rss_urls_file"]):
             self.logger.error("RSS_URLS_FILE missing!")
@@ -124,7 +124,7 @@ class GTSHolMirDas:
 
     def run_forever(self):
         wait_seconds = self.parse_interval(self.config["fetch_interval"])
-        self.logger.info(f"GTS-Federator Active. Interval: {self.config['fetch_interval']}")
+        self.logger.info(f"GTS-Federator active. Interval: {self.config['fetch_interval']}")
         while True:
             self.process_feeds()
             
@@ -135,7 +135,7 @@ class GTSHolMirDas:
             time.sleep(wait_seconds)
 
 if __name__ == "__main__":
-    bot = GTSHolMirDas()
+    bot = GTSFederator()
     if not bot.config["access_token"]:
         sys.exit("Error: GTS_ACCESS_TOKEN missing!")
     bot.run_forever()
