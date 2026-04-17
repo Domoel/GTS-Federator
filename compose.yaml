@@ -4,12 +4,12 @@ services:
   gts-federation:
     image: domoel/gts-federator:latest
     container_name: gts-federator
-    #user: 1026:100 # "If you run into permission issues with the 'data' folder, make sure to set the correct UID/GID for your system."
+    #user: 1026:100 # If you run into permission issues with the 'data' folder, make sure to set the correct UID/GID for your system.
     volumes:
       - ./data:/app/data
       - ./rss_feeds.txt:/app/rss_feeds.txt:ro
     environment:
-      - TZ=Europe/Berlin # Change to your local timezone
+      - TZ=Europe/Berlin # Change to your local timezone.
     env_file:
       - .env
     restart: always
