@@ -6,7 +6,7 @@ import json
 import logging
 import requests
 import feedparser
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 class GTSHolMirDas:
     def __init__(self):
@@ -27,6 +27,7 @@ class GTSHolMirDas:
         )
         self.logger = logging.getLogger(__name__)
         self.db_path = os.getenv("DATABASE_PATH", "/app/data/processed_urls.json")
+        
         self.processed_urls, self.previous_instances = self.load_state()
         
         self.session = requests.Session()
@@ -46,28 +47,30 @@ class GTSHolMirDas:
     def load_state(self):
         if os.path.exists(self.db_path):
             try:
-                with open(self.db_path, 'r') as f:
+                with open(self.db_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     return set(data.get('processed_urls', [])), data.get('previous_instances', 0)
             except Exception as e:
-                self.logger.warning(f"DB konnte nicht geladen werden: {e}")
+                self.logger.warning(f"Unable to load database: {e}")
         return set(), 0
 
     def save_state(self, current_instances):
         try:
             os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
             url_list = list(self.processed_urls)[-5000:]
-            with open(self.db_path, 'w') as f:
+            with open(self.db_path, 'w', encoding='utf-8') as f:
                 json.dump({'processed_urls': url_list, 'previous_instances': current_instances}, f, indent=2)
         except Exception as e:
             self.logger.error(f"Save error: {e}")
 
     def process_feeds(self):
+        self.logger.info(f"📂 Start Fetching. Database: {self.db_path}")
+
         if not os.path.exists(self.config["rss_urls_file"]):
-            self.logger.error("RSS_URLS_FILE fehlt!")
+            self.logger.error("RSS_URLS_FILE missing!")
             return
 
-        with open(self.config["rss_urls_file"], 'r') as f:
+        with open(self.config["rss_urls_file"], 'r', encoding='utf-8') as f:
             rss_urls = [l.split('#')[0].strip() for l in f if l.strip() and not l.strip().startswith('#')]
 
         total_new = 0
@@ -87,7 +90,6 @@ class GTSHolMirDas:
                 if new_links:
                     for url in new_links[:self.config["max_posts_per_run"]]:
                         try:
-                            # Timeout auf 30s erhöht, um "Read timed out" zu vermeiden
                             r = self.session.get(
                                 f"{self.config['server_url']}/api/v2/search", 
                                 params={'q': url, 'resolve': 'true', 'limit': 1}, 
@@ -97,20 +99,18 @@ class GTSHolMirDas:
                                 self.processed_urls.add(url)
                                 total_new += 1
                             elif r.status_code == 429:
-                                self.logger.warning("Rate limit hit! Warte 10s...")
+                                self.logger.warning("Rate limit hit! Waiting 10s...")
                                 time.sleep(10)
                             
                             time.sleep(self.config["delay_between_requests"])
                         except Exception as e:
-                            self.logger.error(f"Fehler bei Post {url}: {e}")
+                            self.logger.error(f"Error processing post {url}: {e}")
                     
-                    # OPTIMIERUNG: Speichert nach jedem Feed, wenn neue Posts gefunden wurden
                     self.save_state(self.previous_instances)
 
             except Exception as e:
-                self.logger.error(f"Fehler bei Feed {rss_url}: {e}")
+                self.logger.error(f"Error fetching feed {rss_url}: {e}")
 
-        # Instanz-Statistiken am Ende des gesamten Runs
         try:
             ri = self.session.get(f"{self.config['server_url']}/api/v1/instance", timeout=10)
             curr = ri.json().get('stats', {}).get('domain_count', 0)
@@ -119,19 +119,23 @@ class GTSHolMirDas:
             curr, diff = self.previous_instances, 0
 
         runtime = str(timedelta(seconds=int(time.time() - start_time)))
-        print(f"\n✅ Run beendet | Zeit: {runtime} | Neue Posts: {total_new} | Instanzen: {curr} (+{diff})")
+        print(f"\n✅ Run Completed | Time: {runtime} | New Posts: {total_new} | Instances: {curr} (+{diff})")
         self.save_state(curr)
 
     def run_forever(self):
-        wait = self.parse_interval(self.config["fetch_interval"])
-        self.logger.info(f"GTS-Federator aktiv (Intervall: {self.config['fetch_interval']})")
+        wait_seconds = self.parse_interval(self.config["fetch_interval"])
+        self.logger.info(f"GTS-Federator Active. Interval: {self.config['fetch_interval']}")
         while True:
             self.process_feeds()
-            self.logger.info(f"Nächster Run in {self.config['fetch_interval']}...")
-            time.sleep(wait)
+            
+            next_run = datetime.now() + timedelta(seconds=wait_seconds)
+            self.logger.info(f"💤 Run completed. Pausing for {self.config['fetch_interval']}.")
+            self.logger.info(f"⏰ Next scheduled run: {next_run.strftime('%H:%M:%S')}")
+            
+            time.sleep(wait_seconds)
 
 if __name__ == "__main__":
     bot = GTSHolMirDas()
     if not bot.config["access_token"]:
-        sys.exit("Fehler: GTS_ACCESS_TOKEN fehlt!")
+        sys.exit("Error: GTS_ACCESS_TOKEN missing!")
     bot.run_forever()
