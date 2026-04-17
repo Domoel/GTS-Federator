@@ -95,12 +95,11 @@ The bot is configured via environment variables. Create a `.env` file in your pr
 | `DELAY_BETWEEN_REQUESTS` | Delay in seconds between API calls to prevent rate limiting. | `1` |
 | `REQUEST_TIMEOUT` | Seconds to wait for responses from external servers. | `30` |
 | **Identity & Logs** | | |
-| `TZ` | Your local timezone for accurate logging and scheduling. | `Europe/Berlin` |
 | `LOG_LEVEL` | Level of logging detail (`DEBUG`, `INFO`, `WARNING`, `ERROR`). | `INFO` |
 | `USER_AGENT` | Custom User-Agent to identify your bot to remote instances. | `GTS-Federator/1.0...` |
 | **Paths** | | |
 | `RSS_URLS_FILE` | Internal path to the feed list (change only if necessary). | `/app/rss_feeds.txt` |
-| `DATABASE_PATH` | Internal path to the JSON state file. | `/app/data/processed_urls.json` |
+| `DATABASE_PATH` | Internal path to the JSON state file (change only if necessary). | `/app/data/processed_urls.json` |
 
 ## 📦 Installation
 
