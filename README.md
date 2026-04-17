@@ -1,112 +1,150 @@
-# GTS-HolMirDas 🚀
+<p align="center">
+  <a href="https://ztfr.eu/matrix">
+    <img src="assets/community-badge.png" alt="Join Zeitfresser Matrix Community" height="70" />
+  </a>
+</p>
 
-RSS-based content discovery for [GoToSocial](https://codeberg.org/superseriousbusiness/gotosocial) instances.
+<h1 align="center">
+GTS-Federator
+</span>
+<h4 align="center">
+<span style="display:inline-flex; align-items:center; gap:12px;">
+A powerful RSS-based discovery engine to populate GoToSocial instances.
+</span>
+<p>
 
-Automatically discovers and federates content from RSS feeds across the Fediverse, helping small GoToSocial instances populate their federated timeline without relying on traditional relays.
+<h6 align="center">
+  <a href="https://ztfr.eu">🏰 Website</a>
+  ·
+  <a href="https://ztfr.eu/matrix">📰 Zeitfresser Matrix Community</a>
+  ·
+  <a href="https://social.ztfr.eu/@federator">🐘 Fediverse</a> 
+  ·
+  <a href="https://look.ztfr.eu/#/#support:ztfr.eu">💬 Supportchat</a> 
+</h6>
+<br>
 
-Inspired by the original [HolMirDas](https://github.com/aliceif/HolMirDas) by [@aliceif](https://mkultra.x27.one/@aliceif), adapted for GoToSocial with enhanced Docker deployment and multi-instance processing.
+## ✨ Introduction
 
-## ✨ Key Features
+**GTS-Federator** is a high-efficiency content discovery tool designed for [GoToSocial](https://codeberg.org/superseriousbusiness/gotosocial) instances. It solves the "empty timeline" problem of small or personal instances by automatically discovering and federating content from RSS feeds across the Fediverse.
 
-- **📡 Multi-Instance Discovery** - Fetches content from configurable RSS feeds across Fediverse instances
-- **⚡ Performance Scaling** - 20-100 posts per feed with URL parameters (`?limit=100`)  
-- **🐳 Production Ready** - Docker deployment, environment-based config, health monitoring
-- **📊 Comprehensive Stats** - Runtime metrics, federation growth, performance tracking
-- **🔧 Zero Maintenance** - Runs automatically every hour with duplicate detection
+By leveraging RSS feeds from larger instances or specific hashtags, GTS-Federator acts as a lightweight alternative to traditional relays, giving you full control over what kind of content populates your federated timeline.
 
-## 🚀 Quick Start
+🏛 Evolution & Credits
 
-```bash
-# Clone the repository
-git clone https://git.klein.ruhr/matthias/gts-holmirdas
-cd gts-holmirdas
+GTS-Federator is a refined and modernized fork built upon the innovative concepts of the original Fediverse discovery tools. This project stands on the shoulders of:
 
-# Copy configuration templates
-cp .env.example .env
-cp rss_feeds.example.txt rss_feeds.txt
+    @aliceif – The original creator of HolMirDas, who pioneered the concept of RSS-based federation.
 
-# Edit configuration
-nano .env              # Add your GTS credentials
-nano rss_feeds.txt     # Customize RSS feeds
+    Matthias – Whose fork introduced essential GoToSocial adaptations and performance improvements.
 
-# Deploy
-docker compose up -d
+This version takes these foundations and optimizes them for modern production environments, focusing on native Docker integration, long-term stability, and GoToSocial's unique architectural requirements.
 
-# Monitor
-docker compose logs -f
+## 🛠 What this bot is for
+
+GTS-Federator is not a relay in the traditional sense. It is a targeted discovery engine. Instead of receiving everything from a relay, you "pull" exactly what interests you.
+
+It is a perfect fit if you:
+
+- run a personal or small GoToSocial instance (especially on low-power hardware like a Synology NAS or Raspberry Pi)
+- want to populate your federated timeline with specific topics (via Hashtag-RSS)
+- prefer a pull-based discovery over the "firehose" of public relays
+- need a "set and forget" solution that runs silently in the background
+
+## 🚀 Core Features
+
+### Smart Content Discovery
+The bot monitors a configurable list of RSS feeds. For every new entry found, it triggers your GoToSocial instance to fetch and federate the post. This makes the content available for your local users and populates your instance's database with new remote profiles and statuses.
+
+### Efficient Resource Management
+Unlike many other fetchers, GTS-Federator is designed with a "Single User" philosophy. It uses a persistent HTTP session and a local JSON-based memory to ensure that your instance isn't hammered with redundant requests.
+
+### Real-Time Analytics
+After every run, the bot provides a clean summary of its activity:
+- **Runtime:** How long the discovery took.
+- **New Posts:** Number of successfully federated statuses.
+- **Instance Growth:** Tracking how many new Fediverse domains your instance has discovered through the process.
+
+### Adaptive Pausing & Timezone Support
+The bot calculates its next run based on your local time. With built-in timezone support, the logs will always show you exactly when the next discovery cycle starts, matching your local wall clock.
+
+### Production-Ready Dockerization
+The entire application is container-native. It runs as a non-root user for enhanced security and can be deployed in seconds using Docker Compose.
+
+## 🧠 Design Philosophy
+
+GTS-Federator follows a few key principles:
+
+- **Keep it lightweight** – Written in clean Python, utilizing minimal RAM and CPU.
+- **Zero-Maintenance** – Once configured, it handles rate limits, connection timeouts, and state persistence automatically.
+- **Privacy First** – No external tracking. The bot only communicates with your instance and the RSS sources you define.
+- **Transparency** – Clear, human-readable logs that tell you exactly what is happening.
+
+## ⚙️ Configuration (Environment Variables)
+
+The bot is configured via environment variables. Create a `.env` file in your project directory using the following parameters:
+
+| Variable | Description | Default / Example |
+| :--- | :--- | :--- |
+| **Basics** | | |
+| `GTS_SERVER_URL` | The full URL of your GoToSocial instance. | `https://social.domain.tld` |
+| `GTS_ACCESS_TOKEN` | Your application's Access Token (needs read/search scopes). | `YOUR_SECRET_TOKEN` |
+| **Performance** | | |
+| `FETCH_INTERVAL` | Time the bot sleeps between discovery runs (e.g., `30m`, `1h`). | `30m` |
+| `MAX_POSTS_PER_RUN` | Maximum number of new posts to process per RSS feed per run. | `25` |
+| `DELAY_BETWEEN_REQUESTS` | Delay in seconds between API calls to prevent rate limiting. | `1` |
+| `REQUEST_TIMEOUT` | Seconds to wait for responses from external servers. | `30` |
+| **Identity & Logs** | | |
+| `LOG_LEVEL` | Level of logging detail (`DEBUG`, `INFO`, `WARNING`, `ERROR`). | `INFO` |
+| `USER_AGENT` | Custom User-Agent to identify your bot to remote instances. | `GTS-Federator/1.0...` |
+| **Paths** | | |
+| `RSS_URLS_FILE` | Internal path to the feed list (change only if necessary). | `/app/rss_feeds.txt` |
+| `DATABASE_PATH` | Internal path to the JSON state file (change only if necessary). | `/app/data/processed_urls.json` |
+
+## 📦 Installation
+
+### Preparation
+
+Before deploying, you need to set up the directory structure. This ensures the bot can save its "memory" and find your configuration.
+
+1. Create the Project Folder: Create a main directory (e.g., gts-federation).
+2. Create the Data Subfolder: Inside that folder, create a subfolder named data. This is where the bot stores its database (processed_urls.json).
+3. Place your Files: Put your compose.yaml, .env, and rss_feeds.txt into the main directory.
+
+### Folder Structure:
+
+Your final structure should look like this:
+
 ```
 
-## 📈 Performance at Scale
+gts-federation/
+├── data/               <-- Subfolder for the database (Required)
+├── .env                <-- Your credentials & settings
+├── compose.yaml        <-- Docker configuration
+└── rss_feeds.txt       <-- Your list of RSS feeds
 
-**Real Production Data:**
-```
-📊 Runtime: 8:42 | 487 posts processed | 3,150+ instances discovered
-⚡ 56 posts/minute | 102 RSS feeds | +45 new instances per run
-💾 Resource usage: ~450MB RAM total (GoToSocial + tools)
-```
-
-**Scaling Options:**
-- **Conservative:** 20 posts/feed (~100 posts/run)
-- **Balanced:** 50 posts/feed (~300 posts/run) 
-- **Aggressive:** 100 posts/feed (~600 posts/run)
-
-## 🛠️ Configuration Essentials
-
-### Environment Variables (.env)
-```bash
-# Required
-GTS_SERVER_URL=https://your-gts-instance.tld
-GTS_ACCESS_TOKEN=your_gts_access_token
-
-# Performance Tuning
-MAX_POSTS_PER_RUN=25              # Posts per feed per run
-DELAY_BETWEEN_REQUESTS=1          # Seconds between API calls
-LOG_LEVEL=INFO                    # DEBUG for troubleshooting
 ```
 
-### RSS Feeds (rss_feeds.txt)
-```bash
-# Use URL parameters to scale performance
-https://mastodon.social/tags/homelab.rss?limit=50
-https://fosstodon.org/tags/selfhosting.rss?limit=100
-https://infosec.exchange/tags/security.rss?limit=75
+### Note on Permissions: 
+
+Ensure the data folder is writable. If you are using a specific UID (e.g., on a Synology NAS), assign ownership to that user: `chown -R 1026:100 ./data`
+
+### Compose.yaml
+
 ```
+version: "3"
 
-### GoToSocial Access Token
-1. Login to your GoToSocial instance
-2. Settings → Applications → Create new application
-3. Required scopes: `read`, `read:search`, `read:statuses`
-4. Copy access token to `.env` file
-
-## 📖 Complete Documentation
-
-For detailed information, visit our **[Wiki](https://git.klein.ruhr/matthias/gts-holmirdas/wiki)**:
-
-- **[📋 Installation Guide](https://git.klein.ruhr/matthias/gts-holmirdas/wiki/Installation-Guide.-)** - Detailed setup, Docker configuration, deployment options
-- **[📈 Performance & Scaling](https://git.klein.ruhr/matthias/gts-holmirdas/wiki/Performance-%26-Scaling)** - Optimization tables, scaling strategies, resource planning  
-- **[🛠️ Troubleshooting](https://git.klein.ruhr/matthias/gts-holmirdas/wiki/Troubleshooting)** - Common issues, Docker problems, debugging guide
-- **[⚙️ Advanced Configuration](https://git.klein.ruhr/matthias/gts-holmirdas/wiki/Advanced-Configuration)** - Environment variables, RSS strategies, production tips
-- **[📊 Monitoring & Stats](https://git.klein.ruhr/matthias/gts-holmirdas/wiki/Monitoring-%26-Stats)** - Understanding output, health monitoring, metrics
-- **[❓ FAQ](https://git.klein.ruhr/matthias/gts-holmirdas/wiki/FAQ+-+Frequently+Asked+Questions.-)** - Common questions and answers
-
-## 🤝 Community & Support
-
-- **[Contributing Guide](Contributing)** - Development setup and contribution guidelines *(coming soon)*
-- **Issues**: [Report bugs or request features](https://git.klein.ruhr/matthias/gts-holmirdas/issues)  
-- **Contact**: [@matthias@me.klein.ruhr](https://me.klein.ruhr/@matthias) on the Fediverse
-
-## 🔗 Related Projects
-
-- **[FediFetcher](https://github.com/nanos/fedifetcher)** - Fetches missing replies and posts
-- **[GoToSocial](https://github.com/superseriousbusiness/gotosocial)** - Lightweight ActivityPub server  
-- **[slurp](https://github.com/VyrCossont/slurp)** - Import posts from other instances
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Inspired by [HolMirDas](https://github.com/aliceif/HolMirDas) by [@aliceif](https://mkultra.x27.one/@aliceif)
-- Built for the GoToSocial community
-- RSS-to-ActivityPub federation approach
+services:
+  gts-federation:
+    image: domoel/gts-federator:latest
+    container_name: gts-federator
+    #user: 1026:100 # If you run into permission issues with the 'data' folder, make sure to set the correct UID/GID for your system.
+    volumes:
+      - ./data:/app/data
+      - ./rss_feeds.txt:/app/rss_feeds.txt:ro
+    environment:
+      - TZ=Europe/Berlin # Change to your local timezone.
+    env_file:
+      - .env
+    restart: always
+```
