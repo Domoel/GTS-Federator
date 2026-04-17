@@ -34,9 +34,8 @@ By leveraging RSS feeds from larger instances or specific hashtags, GTS-Federato
 
 GTS-Federator is a refined and modernized fork built upon the innovative concepts of the original Fediverse discovery tools. This project stands on the shoulders of:
 
-    @aliceif – The original creator of HolMirDas, who pioneered the concept of RSS-based federation.
-
-    Matthias – Whose fork introduced essential GoToSocial adaptations and performance improvements.
+- [@aliceif](https://mkultra.x27.one/@aliceif) – The original creator of [HolMirDas](https://github.com/aliceif/HolMirDas), who pioneered the concept of RSS-based federation.
+- [Matthias](https://git.klein.ruhr/matthias) – Whose [fork](https://git.klein.ruhr/matthias/gts-holmirdas) introduced essential GoToSocial adaptations and performance improvements.
 
 This version takes these foundations and optimizes them for modern production environments, focusing on native Docker integration, long-term stability, and GoToSocial's unique architectural requirements.
 
