@@ -5,7 +5,7 @@
 </p>
 
 <h1 align="center">
-GTS-Federator
+GTS Federator
 </span>
 <h4 align="center">
 <span style="display:inline-flex; align-items:center; gap:12px;">
