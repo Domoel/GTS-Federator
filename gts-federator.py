@@ -64,7 +64,7 @@ class GTSFederator:
             self.logger.error(f"Save error: {e}")
 
     def process_feeds(self):
-        self.logger.info(f"📂 Starting fetch run. Database: {self.db_path}")
+        self.logger.info(f"📂 Starting Fetch Run. Database: {self.db_path}")
 
         if not os.path.exists(self.config["rss_urls_file"]):
             self.logger.error("RSS_URLS_FILE missing!")
@@ -124,7 +124,7 @@ class GTSFederator:
 
     def run_forever(self):
         wait_seconds = self.parse_interval(self.config["fetch_interval"])
-        self.logger.info(f"GTS-Federator active. Interval: {self.config['fetch_interval']}")
+        self.logger.info(f"GTS-Federator Active. Interval: {self.config['fetch_interval']}")
         while True:
             self.process_feeds()
             
