@@ -18,7 +18,7 @@ A powerful RSS-based discovery engine to populate GoToSocial instances.
   ·
   <a href="https://ztfr.eu/matrix">📰 Zeitfresser Matrix Community</a>
   ·
-  <a href="https://social.ztfr.eu/@federator">🐘 Fediverse</a> 
+  <a href="https://social.ztfr.eu/@dome">🐘 Fediverse</a> 
   ·
   <a href="https://look.ztfr.eu/#/#support:ztfr.eu">💬 Supportchat</a> 
 </h6>
@@ -148,3 +148,4 @@ services:
       - .env
     restart: always
 ```
+You can download the docker image on [Docker Hub](https://hub.docker.com/repository/docker/domoel/gts-federator/general)
