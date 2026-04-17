@@ -64,6 +64,7 @@ class GTSHolMirDas:
             self.logger.error(f"Save error: {e}")
 
     def process_feeds(self):
+        # DIESE ZEILE HAT GEFEHLT: Bestätigung des Datenbank-Pfads bei jedem Suchlauf
         self.logger.info(f"📂 Starte Suchlauf. Datenbank: {self.db_path}")
 
         if not os.path.exists(self.config["rss_urls_file"]):
