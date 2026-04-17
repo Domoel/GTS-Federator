@@ -5,14 +5,8 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copy and install requirements
-# Stelle sicher, dass eine requirements.txt in deinem Repo liegt (Inhalt: requests)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-
-# --- DIESER TEIL HAT GEFEHLT ---
-# Kopiere das Skript aus deinem Repository in das Image
-COPY gts-holmirdas.py .
-# -------------------------------
 
 # Create data directory
 RUN mkdir -p /app/data
@@ -26,5 +20,5 @@ RUN chown -R holmirdas:holmirdas /app
 # Switch to non-root user
 USER holmirdas
 
-# Default command - ACHTUNG: Bindestrich statt Unterstrich!
-CMD ["python", "gts-holmirdas.py"]
+# Default command (will be overridden by docker-compose)
+CMD ["python", "gts_holmirdas.py"]
