@@ -70,7 +70,7 @@ The bot calculates its next run based on your local time. With built-in timezone
 ### Production-Ready Dockerization
 The entire application is container-native. It runs as a non-root user for enhanced security and can be deployed in seconds using Docker Compose.
 
-## 🚀 Key Upgrades in this Fork
+## 💡 Key Upgrades in this Fork
 
 While the original project pioneered the core discovery concept, this fork has been fundamentally restructured for modern, containerized production environments:
 
