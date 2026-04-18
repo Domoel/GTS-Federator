@@ -74,12 +74,12 @@ The entire application is container-native. It runs as a non-root user for enhan
 
 While the original project pioneered the core discovery concept, this fork has been fundamentally restructured for modern, containerized production environments:
 
-- From "Script" to "Service": Replaced external dependency on system cron jobs with an internal interval-based engine, allowing for a native "always-on" Docker experience.
-- Controlled Request Sequencing: Introduced staggered execution and request delays. By throttling API calls, we prevent the "thundering herd" effect, effectively load-balancing discovery traffic to keep your instance responsive.
-- Resilient State Persistence: Upgraded from simple URL tracking to a structured JSON database that persists across container restarts, including tracking for domain growth metrics.
-- Professional Logging & Observability: Implemented a standardized logging framework that supports custom log levels (DEBUG/INFO) and provides real-time feedback on runtime, processed posts, and instance growth.
-- Environment-Native Design: Complete decoupling of configuration from code. Every aspect—from API timeouts to timing intervals—is now managed via standardized environment variables (.env).
-- Security-First Containerization: Provided a hardened Dockerfile that ensures the bot runs as a non-root user with minimized permissions, suitable for high-security home lab setups.
+- **From "Script" to "Service":** Replaced external dependency on system cron jobs with an internal interval-based engine, allowing for a native "always-on" Docker experience.
+- **Controlled Request Sequencing:** Introduced staggered execution and request delays. By throttling API calls, we prevent the "thundering herd" effect, effectively load-balancing discovery traffic to keep your instance responsive.
+- **Resilient State Persistence:** Upgraded from simple URL tracking to a structured JSON database that persists across container restarts, including tracking for domain growth metrics.
+- **Professional Logging & Observability:** Implemented a standardized logging framework that supports custom log levels (DEBUG/INFO) and provides real-time feedback on runtime, processed posts, and instance growth.
+- **Environment-Native Design:** Complete decoupling of configuration from code. Every aspect—from API timeouts to timing intervals—is now managed via standardized environment variables (.env).
+- **Security-First Containerization:** Provided a hardened Dockerfile that ensures the bot runs as a non-root user with minimized permissions, suitable for high-security home lab setups.
 
 ## 🧠 Design Philosophy
 
