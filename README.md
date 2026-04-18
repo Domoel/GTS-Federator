@@ -39,7 +39,7 @@ GTS-Federator is a refined and modernized fork built upon the innovative concept
 
 This version takes these foundations and optimizes them for modern production environments, focusing on native Docker integration, long-term stability, and GoToSocial's unique architectural requirements.
 
-## 🛠 What this bot is for
+## 🛠 What this service is for
 
 GTS-Federator is not a relay in the traditional sense. It is a targeted discovery engine. Instead of receiving everything from a relay, you "pull" exactly what interests you.
 
@@ -69,6 +69,17 @@ The bot calculates its next run based on your local time. With built-in timezone
 
 ### Production-Ready Dockerization
 The entire application is container-native. It runs as a non-root user for enhanced security and can be deployed in seconds using Docker Compose.
+
+## 🚀 Key Upgrades in this Fork
+
+While the original project pioneered the core discovery concept, this fork has been fundamentally restructured for modern, containerized production environments:
+
+- From "Script" to "Service": Replaced external dependency on system cron jobs with an internal interval-based engine, allowing for a native "always-on" Docker experience.
+- Controlled Request Sequencing: Introduced staggered execution and request delays. By throttling API calls, we prevent the "thundering herd" effect, effectively load-balancing discovery traffic to keep your instance responsive.
+- Resilient State Persistence: Upgraded from simple URL tracking to a structured JSON database that persists across container restarts, including tracking for domain growth metrics.
+- Professional Logging & Observability: Implemented a standardized logging framework that supports custom log levels (DEBUG/INFO) and provides real-time feedback on runtime, processed posts, and instance growth.
+- Environment-Native Design: Complete decoupling of configuration from code. Every aspect—from API timeouts to timing intervals—is now managed via standardized environment variables (.env).
+- Security-First Containerization: Provided a hardened Dockerfile that ensures the bot runs as a non-root user with minimized permissions, suitable for high-security home lab setups.
 
 ## 🧠 Design Philosophy
 
@@ -148,3 +159,7 @@ services:
     restart: always
 ```
 You can download the docker image on [Docker Hub](https://hub.docker.com/repository/docker/domoel/gts-federator/general)
+
+## 📜 License & Credits
+
+This project is released under the MIT License. This ensures that the code remains open and accessible to the community.
