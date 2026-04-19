@@ -4,6 +4,11 @@
 # Higher limits = more content discovery, but longer processing time
 # Performance tip: Start with limit=50, then increase to 100 if needed
 
+# RSS Feed Templates
+## https://[Instanz]/users/[Account].rss?limit=25.
+## https://[Instanz]/tags/[Topic].rss?limit=25
+
+
 # Tech & Homelab
 https://fosstodon.org/tags/homelab.rss?limit=25     #  25 posts/feed
 https://fosstodon.org/tags/docker.rss?limit=50      #  50 posts/feed
