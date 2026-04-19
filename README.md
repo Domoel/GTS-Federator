@@ -58,11 +58,18 @@ The bot monitors a configurable list of RSS feeds. For every new entry found, it
 ### Efficient Resource Management
 Unlike many other fetchers, GTS-Federator is designed with a "Single User" philosophy. It uses a persistent HTTP session and a local JSON-based memory to ensure that your instance isn't hammered with redundant requests.
 
-### Real-Time Analytics
-After every run, the bot provides a clean summary of its activity:
-- **Runtime:** How long the discovery took.
-- **New Posts:** Number of successfully federated statuses.
-- **Instance Growth:** Tracking how many new Fediverse domains your instance has discovered through the process.
+### Activity Summary & Logs
+
+#### Real-Time Analytics
+After every fetch cycle, the bot provides a clean summary of its activity:
+- **Time:**  Total duration of the discovery run.
+- **New Posts:** Count of unique, previously unseen posts federated into your instance.
+- **Instance Growth:** Total known Fediverse domains and the (+X) growth detected in this cycle.
+
+#### Run Statistics
+Between cycles, the bot summarizes the current status:
+- 📊 **Fetched X Posts from Y RSS-Feeds:** Shows the number of new posts successfully added (Delta) vs. the total number of RSS sources monitored.
+- ⏰ **Next scheduled run:** Displays the timestamp for the upcoming discovery cycle, ensuring you can monitor the bot’s uptime.
 
 ### Adaptive Pausing & Timezone Support
 The bot calculates its next run based on your local time. With built-in timezone support, the logs will always show you exactly when the next discovery cycle starts, matching your local wall clock.
