@@ -68,16 +68,17 @@ class GTSFederator:
 
         if not os.path.exists(self.config["rss_urls_file"]):
             self.logger.error("RSS_URLS_FILE missing!")
-            return
+            return 0, 0
 
         with open(self.config["rss_urls_file"], 'r', encoding='utf-8') as f:
             rss_urls = [l.split('#')[0].strip() for l in f if l.strip() and not l.strip().startswith('#')]
 
         total_new = 0
+        num_feeds = len(rss_urls)
         start_time = time.time()
 
         for i, rss_url in enumerate(rss_urls, 1):
-            self.logger.info(f"[{i}/{len(rss_urls)}] 📡 {rss_url}")
+            self.logger.info(f"[{i}/{num_feeds}] 📡 {rss_url}")
             try:
                 resp = requests.get(rss_url, timeout=15, headers={"User-Agent": self.config['user_agent']})
                 feed = feedparser.parse(resp.content)
@@ -121,15 +122,19 @@ class GTSFederator:
         runtime = str(timedelta(seconds=int(time.time() - start_time)))
         print(f"\n✅ Run Completed | Time: {runtime} | New Posts: {total_new} | Instances: {curr} (+{diff})")
         self.save_state(curr)
+        
+        return total_new, num_feeds
 
     def run_forever(self):
         wait_seconds = self.parse_interval(self.config["fetch_interval"])
         self.logger.info(f"GTS-Federator Active. Interval: {self.config['fetch_interval']}")
         while True:
-            self.process_feeds()
+            posts, feeds = self.process_feeds()
+            
+            self.logger.info(f"💤 Run completed. Pausing for {self.config['fetch_interval']}.")
+            self.logger.info(f"📊 Fetched {posts} Posts from {feeds} RSS-Feeds")
             
             next_run = datetime.now() + timedelta(seconds=wait_seconds)
-            self.logger.info(f"💤 Run completed. Pausing for {self.config['fetch_interval']}.")
             self.logger.info(f"⏰ Next scheduled run: {next_run.strftime('%H:%M:%S')}")
             
             time.sleep(wait_seconds)
