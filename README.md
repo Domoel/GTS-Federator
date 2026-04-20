@@ -165,7 +165,7 @@ services:
       - .env
     restart: always
 ```
-You can download the docker image on [Docker Hub](https://hub.docker.com/repository/docker/domoel/gts-federator/general)
+You can download the docker image on [Docker Hub](https://hub.docker.com/r/domoel/gts-federator))
 
 ## 📜 License & Credits
 
