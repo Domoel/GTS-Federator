@@ -167,6 +167,10 @@ services:
 ```
 You can download the docker image on [Docker Hub](https://hub.docker.com/repository/docker/domoel/gts-federator/general)
 
+## 🛠 Development & Support
+
+If you need to get support or want to participate in the active development of this software, you can <a href="https://ztfr.eu/matrix">join our Zeitfresser Matrix Community</a> or the <a href="https://look.ztfr.eu/#/#support:ztfr.eu">Development & Support Channel</a> on Matrix.
+
 ## 📜 License & Credits
 
 This project is released under the MIT License. This ensures that the code remains open and accessible to the community.
