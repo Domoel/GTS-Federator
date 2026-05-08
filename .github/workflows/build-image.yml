@@ -14,14 +14,8 @@ jobs:
       - name: Generate timestamp
         run: echo "TAG=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
 
-      - name: Enable multi-arch
+      - name: Enable multi-arch (binfmt)
         run: docker run --rm --privileged tonistiigi/binfmt --install all
-
-      - name: Setup buildx
-        run: |
-            docker buildx create --name multiarch
-            docker buildx use multiarch
-            docker buildx inspect --bootstrap
 
       - name: Login to Docker Hub
         run: |
