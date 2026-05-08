@@ -12,8 +12,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate timestamp
-        id: vars
         run: echo "TAG=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
+
+      - name: Enable multi-arch
+        run: docker run --rm --privileged tonistiigi/binfmt --install all
+
+      - name: Setup buildx
+        run: |
+          docker buildx create --use --name multiarch
+          docker buildx inspect --bootstrap
 
       - name: Login to Docker Hub
         run: |
@@ -21,14 +28,11 @@ jobs:
             -u "${{ secrets.DOCKER_USERNAME }}" \
             --password-stdin
 
-      - name: Build image
+      - name: Build and push multi-arch image
         run: |
-          docker build \
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
             -t domoel/gts-federator:latest \
             -t domoel/gts-federator:${TAG} \
+            --push \
             .
-
-      - name: Push image
-        run: |
-          docker push domoel/gts-federator:latest
-          docker push domoel/gts-federator:${TAG}
